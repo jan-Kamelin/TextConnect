@@ -73,8 +73,8 @@
                     rows.forEach(row => {
                         const columns = row.split(','); // Split columns by comma
                         if (columns.length >= 3) {
-                            const username = columns[0].trim(); // Get username
-                            const postContent = columns[2].trim(); // Get post content
+                            const username = columns[1].trim(); // Get username
+                            const postContent = columns[3].trim(); // Get post content
                             const postElement = document.createElement('div');
                             postElement.className = 'post';
                             postElement.innerHTML = `
