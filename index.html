@@ -13,11 +13,28 @@
             padding: 0;
         }
 
-        header {
+        header, footer {
             background-color: #007bff;
             color: white;
-            padding: 1rem;
             text-align: center;
+            padding: 1rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        nav a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
         }
 
         main {
@@ -44,11 +61,21 @@
         .post:last-child {
             border-bottom: none;
         }
+
+        footer p {
+            margin: 0;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>TextConnect</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+        </nav>
     </header>
     <main>
         <section id="form-section">
@@ -60,6 +87,10 @@
             <div id="posts-container"></div>
         </section>
     </main>
+    <footer>
+        <p>&copy; 2024 TextConnect. All rights reserved.</p>
+        <p><a href="mailto:[your contact email]" style="color:white; text-decoration:none;">Contact Us</a></p>
+    </footer>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -73,8 +104,8 @@
                     rows.forEach(row => {
                         const columns = row.split(','); // Split columns by comma
                         if (columns.length >= 3) {
-                            const username = columns[1].trim(); // Get username
-                            const postContent = columns[3].trim(); // Get post content
+                            const username = columns[0].trim(); // Get username
+                            const postContent = columns[2].trim(); // Get post content
                             const postElement = document.createElement('div');
                             postElement.className = 'post';
                             postElement.innerHTML = `
@@ -90,8 +121,5 @@
                 });
         });
     </script>
-    <footer>
-        <p>Please read our <a href="privacy-policy.html">privacy policy</a> and <p><a href="terms.html">terms of service</a>.</p></p>
-    </footer>
 </body>
 </html>
