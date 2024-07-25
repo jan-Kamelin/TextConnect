@@ -13,6 +13,31 @@
             padding: 20px;
         }
 
+        header, footer {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #0056b3;
+            padding: 0.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 1rem;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
         h1, h2 {
             color: #007bff;
         }
@@ -30,11 +55,32 @@
         p {
             margin: 10px 0;
         }
+
+        footer p {
+            margin: 0;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <h1>Terms of Service</h1>
-    <p><strong>Effective Date:</strong> [Date]</p>
+    <header>
+        <h1>Terms of Service</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+        </nav>
+    </header>
+    <p><strong>Effective Date:</strong> 7/25/2024</p>
 
     <h2>Introduction</h2>
     <p>Welcome to TextConnect! These Terms of Service ("Terms") govern your use of our website, <a href="https://jan-kamelin.github.io/TextConnect" target="_blank">jan-kamelin.github.io/TextConnect</a>. By accessing or using our website, you agree to be bound by these Terms.</p>
@@ -68,9 +114,9 @@
     <p>We may update these Terms from time to time. Any changes will be posted on this page, and the date of the latest revision will be indicated at the top of the page.</p>
 
     <h2>Governing Law</h2>
-    <p>These Terms shall be governed by and construed in accordance with the laws of [Your Country/State], without regard to its conflict of law principles.</p>
+    <p>These Terms shall be governed by and construed in accordance with the laws of Colorado, without regard to its conflict of law principles.</p>
 
     <h2>Contact Us</h2>
-    <p>If you have any questions or concerns about these Terms, please contact us using <a href="xmpp:jankamelin@movim.eu">XMPP</a>.</p>
+    <p>If you have any questions or concerns about these Terms, please contact us at <a href="xmpp:jankamelin@movim.eu">jankamelin@movim.eu</a>.</p>
 </body>
 </html>
