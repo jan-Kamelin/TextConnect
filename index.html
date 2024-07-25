@@ -64,34 +64,29 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQMKhgL1rxtAvWQcUnh3ijRCWoq95ZX7B8CJybejegLLinZR-agPYQ0y0yeA4L7AMnRzu5EWrnye9UU/pub?gid=112872717&single=true&output=csv';
-            
-            console.log('Fetching data from:', sheetUrl); // Log the URL being fetched
-            
+
             fetch(sheetUrl)
-                .then(response => {
-                    console.log('Response status:', response.status); // Log response status
-                    return response.text();
-                })
+                .then(response => response.text())
                 .then(csvText => {
-                    console.log('CSV Text:', csvText); // Log CSV text
                     const rows = csvText.split('\n').slice(1); // Remove header
                     const postsContainer = document.getElementById('posts-container');
                     rows.forEach(row => {
-                        const columns = row.split(',');
+                        const columns = row.split(','); // Split columns by comma
                         if (columns.length >= 3) {
-                            console.log('Processing row:', columns); // Log each row
+                            const username = columns[0].trim(); // Get username
+                            const postContent = columns[2].trim(); // Get post content
                             const postElement = document.createElement('div');
                             postElement.className = 'post';
                             postElement.innerHTML = `
-                                <p><strong>${columns[0]}</strong></p>
-                                <p>${columns[2]}</p>
+                                <p><strong>${username}</strong></p>
+                                <p>${postContent}</p>
                             `;
                             postsContainer.appendChild(postElement);
                         }
                     });
                 })
                 .catch(error => {
-                    console.error('Error fetching or parsing data:', error); // Log any errors
+                    console.error('Error fetching or parsing data:', error);
                 });
         });
     </script>
