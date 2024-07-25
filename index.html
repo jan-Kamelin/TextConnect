@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TextConnect</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        main {
+            padding: 1rem;
+        }
+
+        #form-section, #posts-section {
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            padding: 1rem;
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        .post {
+            border-bottom: 1px solid #ccc;
+            padding: 1rem 0;
+        }
+
+        .post:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>TextConnect</h1>
+    </header>
+    <main>
+        <section id="form-section">
+            <h2>Submit Your Post</h2>
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdyHWOoXPmm_SsSil5p-PU5m0loSVvAGCI2B6wl1zFrkJMJWQ/viewform?embedded=true" frameborder="0" style="width:100%; height:500px; border:none;"></iframe>
+        </section>
+        <section id="posts-section">
+            <h2>Recent Posts</h2>
+            <div id="posts-container"></div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQMKhgL1rxtAvWQcUnh3ijRCWoq95ZX7B8CJybejegLLinZR-agPYQ0y0yeA4L7AMnRzu5EWrnye9UU/pub?gid=112872717&single=true&output=csv';
+            
+            console.log('Fetching data from:', sheetUrl); // Log the URL being fetched
+            
+            fetch(sheetUrl)
+                .then(response => {
+                    console.log('Response status:', response.status); // Log response status
+                    return response.text();
+                })
+                .then(csvText => {
+                    console.log('CSV Text:', csvText); // Log CSV text
+                    const rows = csvText.split('\n').slice(1); // Remove header
+                    const postsContainer = document.getElementById('posts-container');
+                    rows.forEach(row => {
+                        const columns = row.split(',');
+                        if (columns.length >= 3) {
+                            console.log('Processing row:', columns); // Log each row
+                            const postElement = document.createElement('div');
+                            postElement.className = 'post';
+                            postElement.innerHTML = `
+                                <p><strong>${columns[0]}</strong></p>
+                                <p>${columns[2]}</p>
+                            `;
+                            postsContainer.appendChild(postElement);
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching or parsing data:', error); // Log any errors
+                });
+        });
+    </script>
+</body>
+</html>
