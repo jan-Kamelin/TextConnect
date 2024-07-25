@@ -13,7 +13,7 @@
             padding: 0;
         }
 
-        header, footer {
+        header {
             background-color: #007bff;
             color: white;
             text-align: center;
@@ -23,14 +23,15 @@
         nav {
             display: flex;
             justify-content: center;
-            gap: 1rem;
-            margin: 1rem 0;
+            background-color: #0056b3;
+            padding: 0.5rem;
         }
 
         nav a {
-            color: #007bff;
+            color: white;
             text-decoration: none;
             font-weight: bold;
+            margin: 0 1rem;
         }
 
         nav a:hover {
@@ -62,8 +63,24 @@
             border-bottom: none;
         }
 
+        footer {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+
         footer p {
             margin: 0;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -89,7 +106,7 @@
     </main>
     <footer>
         <p>&copy; 2024 TextConnect. All rights reserved.</p>
-        <p><a href="mailto:[your contact email]" style="color:white; text-decoration:none;">Contact Us</a></p>
+        <p><a href="xmpp:jankamelin@movim.eu">Contact Us</a></p>
     </footer>
 
     <script>
