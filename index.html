@@ -36,7 +36,7 @@
         main {
             padding: 1rem;
         }
-        #form-section, #posts-section {
+        #form-section, #posts-section, #search-section {
             background-color: #ffffff;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -84,6 +84,12 @@
         </nav>
     </header>
     <main>
+        <section id="search-section">
+            <h2>Search</h2>
+            <input type="text" id="search-input" placeholder="Search for posts, users, or hashtags">
+            <button onclick="search()">Search</button>
+            <div id="search-results"></div>
+        </section>
         <section id="form-section">
             <h2>Submit Your Post</h2>
             <form id="postForm">
@@ -116,11 +122,16 @@
         const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQMKhgL1rxtAvWQcUnh3ijRCWoq95ZX7B8CJybejegLLinZR-agPYQ0y0yeA4L7AMnRzu5EWrnye9UU/pub?gid=112872717&single=true&output=csv';
 
         document.addEventListener("DOMContentLoaded", function() {
+            fetchPosts();
+        });
+
+        function fetchPosts() {
             fetch(sheetUrl)
                 .then(response => response.text())
                 .then(csvText => {
                     const rows = csvText.split('\n').slice(1); // Remove header
                     const postsContainer = document.getElementById('posts-container');
+                    postsContainer.innerHTML = '';
                     rows.forEach(row => {
                         const columns = row.split(','); // Split columns by comma
                         if (columns.length >= 3) {
@@ -140,7 +151,38 @@
                 .catch(error => {
                     console.error('Error fetching or parsing data:', error);
                 });
-        });
+        }
+
+        function search() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            fetch(sheetUrl)
+                .then(response => response.text())
+                .then(csvText => {
+                    const rows = csvText.split('\n').slice(1); // Remove header
+                    const searchResults = document.getElementById('search-results');
+                    searchResults.innerHTML = '';
+                    rows.forEach(row => {
+                        const columns = row.split(','); // Split columns by comma
+                        if (columns.length >= 3) {
+                            const username = columns[1].trim().toLowerCase();
+                            const content = columns[2].trim().toLowerCase();
+
+                            if (username.includes(query) || content.includes(query) || content.includes('#' + query)) {
+                                const resultElement = document.createElement('div');
+                                resultElement.className = 'post';
+                                resultElement.innerHTML = `
+                                    <p><strong>${columns[1].trim()}</strong></p>
+                                    <p>${columns[2].trim()}</p>
+                                `;
+                                searchResults.appendChild(resultElement);
+                            }
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching or parsing data:', error);
+                });
+        }
 
         function previewPost() {
             const username = document.getElementById('username').value;
@@ -186,32 +228,8 @@
                 document.getElementById('charCount').innerText = '0/280 characters';
                 document.getElementById('postPreview').innerHTML = '';
 
-                // Optionally, fetch the updated posts
-                fetch(sheetUrl)
-                    .then(response => response.text())
-                    .then(csvText => {
-                        const rows = csvText.split('\n').slice(1); // Remove header
-                        const postsContainer = document.getElementById('posts-container');
-                        postsContainer.innerHTML = '';
-                        rows.forEach(row => {
-                            const columns = row.split(','); // Split columns by comma
-                            if (columns.length >= 3) {
-                                const username = columns[1].trim();
-                                const content = columns[2].trim();
-
-                                const postElement = document.createElement('div');
-                                postElement.className = 'post';
-                                postElement.innerHTML = `
-                                    <p><strong>${username}</strong></p>
-                                    <p>${content}</p>
-                                `;
-                                postsContainer.appendChild(postElement);
-                            }
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error fetching or parsing data:', error);
-                    });
+                // Fetch the updated posts
+                fetchPosts();
             }).catch(error => {
                 console.error('Error submitting form:', error);
                 alert('Failed to submit post. Please try again.');
