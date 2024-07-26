@@ -129,14 +129,13 @@
             fetch(sheetUrl)
                 .then(response => response.text())
                 .then(csvText => {
-                    const rows = csvText.split('\n').slice(1); // Remove header
+                    const rows = parseCSV(csvText);
                     const postsContainer = document.getElementById('posts-container');
                     postsContainer.innerHTML = '';
                     rows.forEach(row => {
-                        const columns = row.split(','); // Split columns by comma
-                        if (columns.length >= 3) {
-                            const username = columns[1].trim();
-                            const content = columns[2].trim();
+                        if (row.length >= 3) {
+                            const username = row[1].trim();
+                            const content = row[2].trim();
 
                             const postElement = document.createElement('div');
                             postElement.className = 'post';
@@ -158,21 +157,20 @@
             fetch(sheetUrl)
                 .then(response => response.text())
                 .then(csvText => {
-                    const rows = csvText.split('\n').slice(1); // Remove header
+                    const rows = parseCSV(csvText);
                     const searchResults = document.getElementById('search-results');
                     searchResults.innerHTML = '';
                     rows.forEach(row => {
-                        const columns = row.split(','); // Split columns by comma
-                        if (columns.length >= 3) {
-                            const username = columns[1].trim().toLowerCase();
-                            const content = columns[2].trim().toLowerCase();
+                        if (row.length >= 3) {
+                            const username = row[1].trim().toLowerCase();
+                            const content = row[2].trim().toLowerCase();
 
                             if (username.includes(query) || content.includes(query) || content.includes('#' + query)) {
                                 const resultElement = document.createElement('div');
                                 resultElement.className = 'post';
                                 resultElement.innerHTML = `
-                                    <p><strong>${columns[1].trim()}</strong></p>
-                                    <p>${columns[2].trim()}</p>
+                                    <p><strong>${row[1].trim()}</strong></p>
+                                    <p>${row[2].trim()}</p>
                                 `;
                                 searchResults.appendChild(resultElement);
                             }
@@ -235,6 +233,30 @@
                 alert('Failed to submit post. Please try again.');
             });
         });
+
+        function parseCSV(text) {
+            const lines = text.split('\n');
+            return lines.map(line => {
+                const cells = [];
+                let insideQuotes = false;
+                let cell = '';
+
+                for (let char of line) {
+                    if (char === '"' && insideQuotes) {
+                        insideQuotes = false;
+                    } else if (char === '"' && !insideQuotes) {
+                        insideQuotes = true;
+                    } else if (char === ',' && !insideQuotes) {
+                        cells.push(cell);
+                        cell = '';
+                    } else {
+                        cell += char;
+                    }
+                }
+                cells.push(cell);
+                return cells;
+            });
+        }
     </script>
 </body>
 </html>
